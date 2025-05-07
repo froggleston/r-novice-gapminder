@@ -16,6 +16,7 @@ jobs:
   check-merge:
     name: "Check if PR was merged"
     runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
     outputs:
       merged: ${{ steps.check.outputs.merged }}
     steps:
