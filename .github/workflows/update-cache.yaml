@@ -88,7 +88,7 @@ jobs:
 
       - name: "Update {renv} deps and determine if a PR is needed"
         id: update
-        uses: froggleston/actions/update-lockfile@main
+        uses: carpentries/actions/update-lockfile@main
         with:
           update: ${{ github.event.inputs.update-packages }}
           generate-cache: ${{ env.LOCKFILE_CACHE_GEN }}
