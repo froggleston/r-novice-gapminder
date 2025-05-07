@@ -165,9 +165,9 @@ sessionInfo()
 ```
 
 ``` output
-R version 4.4.3 (2025-02-28)
+R version 4.5.0 (2025-04-11)
 Platform: x86_64-pc-linux-gnu
-Running under: Ubuntu 24.04.1 LTS
+Running under: Ubuntu 24.04.2 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -188,7 +188,7 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
-[1] compiler_4.4.3 tools_4.4.3    yaml_2.3.10    knitr_1.50     xfun_0.52     
+[1] compiler_4.5.0 tools_4.5.0    yaml_2.3.10    knitr_1.50     xfun_0.52     
 [6] renv_1.1.4     evaluate_1.0.3
 ```
 
