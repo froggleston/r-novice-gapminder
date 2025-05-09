@@ -7,6 +7,11 @@ on:
         description: 'Who triggered this build (enter github username to tag yourself)?'
         required: true
         default: 'monthly run'
+      skip-restore:
+        description: 'Skip restoring renv packages first?'
+        required: false
+        default: false
+        type: boolean
       update-packages:
         description: 'Install any package updates?'
         required: false
@@ -23,6 +28,7 @@ on:
 
 env:
   LOCKFILE_CACHE_GEN: ${{ github.event.inputs.generate-cache || 'false' }}
+  LOCKFILE_UPDATE_FORCE: ${{ github.event.inputs.force-lockfile-update || 'false' }}
 
 jobs:
   preflight:
@@ -91,6 +97,7 @@ jobs:
         uses: froggleston/actions/update-lockfile@main
         with:
           update: ${{ github.event.inputs.update-packages }}
+          skip-restore: ${{ env.SKIP_RESTORE }}
           generate-cache: ${{ env.LOCKFILE_CACHE_GEN }}
           cache-version: ${{ secrets.CACHE_VERSION }}
 
