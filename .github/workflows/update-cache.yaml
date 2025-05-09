@@ -28,7 +28,7 @@ on:
 
 env:
   LOCKFILE_CACHE_GEN: ${{ github.event.inputs.generate-cache || 'false' }}
-  LOCKFILE_UPDATE_FORCE: ${{ github.event.inputs.force-lockfile-update || 'false' }}
+  SKIP_RENV_RESTORE: ${{ github.event.inputs.skip-restore || 'false' }}
 
 jobs:
   preflight:
@@ -97,7 +97,7 @@ jobs:
         uses: froggleston/actions/update-lockfile@main
         with:
           update: ${{ github.event.inputs.update-packages }}
-          skip-restore: ${{ env.SKIP_RESTORE }}
+          skip-restore: ${{ env.SKIP_RENV_RESTORE }}
           generate-cache: ${{ env.LOCKFILE_CACHE_GEN }}
           cache-version: ${{ secrets.CACHE_VERSION }}
 
