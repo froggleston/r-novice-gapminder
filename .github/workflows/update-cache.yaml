@@ -8,7 +8,7 @@ on:
         required: true
         default: 'monthly run'
       skip-restore:
-        description: 'Skip restoring renv packages first?'
+        description: 'Force lockfile update?'
         required: false
         default: false
         type: boolean
