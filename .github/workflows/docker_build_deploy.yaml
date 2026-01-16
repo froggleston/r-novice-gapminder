@@ -6,6 +6,7 @@ on:
       - 'main'
     paths-ignore:
       - '.github/workflows/**.yaml'
+      - '.github/workbench-docker-version.txt'
   schedule:
     - cron: '0 0 * * 2'
   workflow_dispatch:
