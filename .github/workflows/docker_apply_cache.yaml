@@ -103,6 +103,14 @@ jobs:
               ) &&
               github.event.pull_request.head.ref == 'update/workflows'
             )
+            ||
+            (
+              contains(
+                join(github.event.pull_request.labels.*.name, ','),
+                'type: docker version'
+              ) &&
+              github.event.pull_request.head.ref == 'update/workbench-docker-version'
+            )            
           )
         )
       )
