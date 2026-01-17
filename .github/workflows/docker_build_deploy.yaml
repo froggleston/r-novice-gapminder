@@ -83,8 +83,16 @@ jobs:
       contents: write
       pages: write
       id-token: write
+    strategy:
+      matrix:
+        include:
+          - image: ghcr.io/carpentries/workbench-docker:${{ vars.WORKBENCH_TAG || 'latest' }}
+            is_primary: true
+          - image: carpentries/workbench-docker:${{ vars.WORKBENCH_TAG || 'latest' }}
+            is_primary: false
+    continue-on-error: ${{ matrix.is_primary }}
     container:
-      image: carpentries/workbench-docker:${{ vars.WORKBENCH_TAG || 'latest' }}
+      image: ${{ matrix.image }}
       env:
         WORKBENCH_PROFILE: "ci"
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
