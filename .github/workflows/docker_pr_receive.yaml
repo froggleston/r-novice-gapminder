@@ -137,7 +137,7 @@ jobs:
       pages: write
       id-token: write
     container:
-      image: carpentries/workbench-docker:${{ vars.WORKBENCH_TAG || 'latest' }}
+      image: ghcr.io/carpentries/workbench-docker:${{ vars.WORKBENCH_TAG || 'latest' }}
       env:
         WORKBENCH_PROFILE: "ci"
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
