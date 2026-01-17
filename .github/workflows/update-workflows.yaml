@@ -1,6 +1,8 @@
 name: "04 Maintain: Update Workflow Files"
 description: "Update workflow files from the carpentries/sandpaper repository"
 on:
+  schedule:
+    - cron: '0 0 * * 2'
   workflow_dispatch:
     inputs:
       name:
@@ -89,15 +91,15 @@ jobs:
           repo: ${{ github.event.inputs.tarball || 'https://carpentries.r-universe.dev' }}
           clean: ${{ github.event.inputs.clean || '.yaml' }}
 
-      - name: Test n
-        run: |
-          echo "${{ steps.update.outputs.new }}"
-
       - name: Create Pull Request
         id: cpr
         if: |
-          steps.update.outputs.new &&
-          steps.validate-token.outputs.wf == 'true'
+          steps.update.outputs.new != '' &&
+          steps.validate-token.outputs.wf == 'true' &&
+          (
+            (endsWith(steps.update.outputs.new, 'tar.gz') || endsWith(steps.update.outputs.new, 'zip')) ||
+            (steps.update.outputs.new > 0)
+          )
         uses: carpentries/create-pull-request@main
         with:
           token: ${{ steps.set-pat.outputs.pat || secrets.SANDPAPER_WORKFLOW }}
