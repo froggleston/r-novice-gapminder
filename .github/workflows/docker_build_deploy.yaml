@@ -84,6 +84,8 @@ jobs:
       pages: write
       id-token: write
     strategy:
+      max-parallel: 1
+      fail-fast: false    
       matrix:
         include:
           - image: ghcr.io/carpentries/workbench-docker:${{ vars.WORKBENCH_TAG || 'latest' }}
