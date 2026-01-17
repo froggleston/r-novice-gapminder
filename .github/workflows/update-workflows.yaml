@@ -89,15 +89,15 @@ jobs:
           repo: ${{ github.event.inputs.tarball || 'https://carpentries.r-universe.dev' }}
           clean: ${{ github.event.inputs.clean || '.yaml' }}
 
+      - name: Test n
+        run: |
+          echo "${{ steps.update.outputs.new }}"
+
       - name: Create Pull Request
         id: cpr
         if: |
-          steps.update.outputs.new != '' &&
-          steps.validate-token.outputs.wf == 'true' &&
-          (
-            (endsWith(steps.update.outputs.new, 'tar.gz') || endsWith(steps.update.outputs.new, 'zip')) ||
-            (steps.update.outputs.new > 0)
-          )
+          steps.update.outputs.new &&
+          steps.validate-token.outputs.wf == 'true'
         uses: carpentries/create-pull-request@main
         with:
           token: ${{ steps.set-pat.outputs.pat || secrets.SANDPAPER_WORKFLOW }}
