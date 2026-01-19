@@ -110,7 +110,7 @@ jobs:
                 'type: docker version'
               ) &&
               github.event.pull_request.head.ref == 'update/workbench-docker-version'
-            )            
+            )
           )
         )
       )
@@ -208,13 +208,13 @@ jobs:
           restore-keys:
             ${{ github.repository }}/${{ steps.wb-vers.outputs.container-version }}_renv-
 
-  # trigger the build deploy workflow if update-renv-cache was successful
   trigger-build-deploy:
     name: "Trigger Build and Deploy Workflow"
     runs-on: ubuntu-latest
     needs: update-renv-cache
     if: |
-      needs.update-renv-cache.result == 'success'
+      needs.update-renv-cache.result == 'success' ||
+      needs.update-renv-cache.outputs.renv-cache-available == 'true'
     steps:
       - uses: actions/checkout@v4
 
