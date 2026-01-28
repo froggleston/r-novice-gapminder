@@ -137,6 +137,7 @@ jobs:
       checks: write
       contents: write
       pages: write
+      id-token: write
     container:
       image: ghcr.io/carpentries/workbench-docker:${{ vars.WORKBENCH_TAG || 'latest' }}
       env:
