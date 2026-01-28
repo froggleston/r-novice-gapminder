@@ -1,6 +1,10 @@
 name: "Bot: Comment on the Pull Request"
 description: "Comment on the pull request with the results of the markdown generation"
 on:
+  workflow_run:
+    workflows: ["Bot: Receive Pull Request"]
+    types:
+      - completed
   workflow_dispatch:
     inputs:
       workflow_id:
