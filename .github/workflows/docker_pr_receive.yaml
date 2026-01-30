@@ -50,10 +50,13 @@ jobs:
     name: "Preflight: md-outputs exists?"
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'workflow_run' ||
+      github.event_name == 'workflow_dispatch' ||
       (
-        github.event_name == 'pull_request' &&
-        github.event.pull_request.head.ref != 'update/packages'
+        github.event_name == 'workflow_run' ||
+        (
+          github.event_name == 'pull_request' &&
+          github.event.pull_request.head.ref != 'update/packages'
+        )
       )
     outputs:
       branch-exists: ${{ steps.check.outputs.exists }}
