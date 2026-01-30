@@ -15,7 +15,7 @@ on:
         required: true
 
 concurrency:
-  group: ${{ github.ref }}
+  group: pr-receive-${{ github.event.pull_request.number || github.event.workflow_run.pull_requests[0].number || github.run_id }}
   cancel-in-progress: true
 
 permissions:
@@ -32,6 +32,7 @@ jobs:
       github.event.pull_request.head.ref == 'update/packages'
     steps:
       - name: "Skip duplicate trigger from bot on update/packages branch"
+        id: skip-check
         run: |
           echo "## ⏭️ Skipped: Duplicate Trigger Detected" >> $GITHUB_STEP_SUMMARY
           echo "**Event:** \`pull_request\` (opened)" >> $GITHUB_STEP_SUMMARY
@@ -45,6 +46,19 @@ jobs:
           echo "2. ✅ \`workflow_run\` event (will run after workflow completes)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "✅ No action needed - this is expected behavior." >> $GITHUB_STEP_SUMMARY
+
+          echo "should-skip=true" >> $GITHUB_OUTPUT
+
+      - name: "Cancel duplicate run"
+        if: steps.skip-check.outputs.should-skip == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.cancelWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
 
   preflight:
     name: "Preflight: md-outputs exists?"
@@ -98,14 +112,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Event: ${{ github.event_name }}"
-
           if [[ "${{ github.event_name }}" == "pull_request" ]] ; then
             PR_NUMBER=${{ github.event.number }}
           elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]] ; then
             PR_NUMBER=${{ inputs.pr_number }}
           elif [[ "${{ github.event_name }}" == "workflow_run" ]] ; then
-            echo "WF event: ${{ github.event.workflow_run.event }}"
             PR_NUMBER=$(gh pr list --repo "${{ github.repository }}" --json number,headRefName --jq '[.[] | select(.headRefName == "update/packages")] | .[0].number')
           fi
 
