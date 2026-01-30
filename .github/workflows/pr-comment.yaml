@@ -11,6 +11,18 @@ on:
       - completed
 
 jobs:
+
+  check-event-status:
+    name: "Check Event Status"
+    runs-on: ubuntu-latest
+    steps:
+      - id: event-status
+        run: |
+          echo "github.event_name: ${{ github.event_name }}"
+          echo "github.event.workflow_run.event: ${{ github.event.workflow_run.event || 'N/A' }}"
+          echo "github.event.workflow_run.conclusion: ${{ github.event.workflow_run.conclusion || 'N/A' }}"
+        shell: bash
+
   # Pull requests are valid if:
   #  - they match the sha of the workflow run head commit
   #  - they are open
