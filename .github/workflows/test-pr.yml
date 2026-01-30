@@ -1,0 +1,16 @@
+name: "Test PR event"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-pr:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: "Grab PR"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr list --repo "${{ github.repository }}" --json number,headRefName --jq '[.[] | select(.headRefName == "update/packages")] | .[0].number'
+        shell: bash
