@@ -1,28 +1,12 @@
 name: "Bot: Comment on the Pull Request"
 description: "Comment on the pull request with the results of the markdown generation"
 on:
-  workflow_dispatch:
-    inputs:
-      workflow_id:
-        required: true
   workflow_run:
     workflows: ["Bot: Receive Pull Request"]
     types:
       - completed
 
 jobs:
-
-  check-event-status:
-    name: "Check Event Status"
-    runs-on: ubuntu-latest
-    steps:
-      - id: event-status
-        run: |
-          echo "github.event_name: ${{ github.event_name }}"
-          echo "github.event.workflow_run.event: ${{ github.event.workflow_run.event || 'N/A' }}"
-          echo "github.event.workflow_run.conclusion: ${{ github.event.workflow_run.conclusion || 'N/A' }}"
-        shell: bash
-
   # Pull requests are valid if:
   #  - they match the sha of the workflow run head commit
   #  - they are open
@@ -30,18 +14,6 @@ jobs:
   test-pr:
     name: "Test if pull request is valid"
     runs-on: ubuntu-latest
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (
-        github.event_name == 'workflow_run' &&
-        (
-          github.event.workflow_run.event == 'pull_request' ||
-          github.event.workflow_run.event == 'workflow_run' ||
-          github.event.workflow_run.event == 'workflow_dispatch' ||
-          github.event.workflow_run.event == 'schedule'
-        ) &&
-        github.event.workflow_run.conclusion == 'success'
-      )
     outputs:
       is_valid: ${{ steps.check-pr.outputs.VALID }}
       payload: ${{ steps.check-pr.outputs.payload }}
@@ -52,7 +24,7 @@ jobs:
         id: dl
         uses: carpentries/actions/download-workflow-artifact@main
         with:
-          run: ${{ github.event.workflow_run.id || inputs.workflow_id }}
+          run: ${{ github.event.workflow_run.id }}
           name: 'pr'
 
       - name: "Get PR Number"
