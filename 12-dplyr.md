@@ -397,8 +397,12 @@ gdp_bycontinents_byyear <- gapminder %>%
 ```
 
 ``` output
-`summarise()` has grouped output by 'continent'. You can override using the
-`.groups` argument.
+`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by continent and year.
+ℹ Output is grouped by continent.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(continent, year))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.
 ```
 
 That is already quite powerful, but it gets even better! You're not limited to defining 1 new variable in `summarize()`.
@@ -414,8 +418,12 @@ gdp_pop_bycontinents_byyear <- gapminder %>%
 ```
 
 ``` output
-`summarise()` has grouped output by 'continent'. You can override using the
-`.groups` argument.
+`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by continent and year.
+ℹ Output is grouped by continent.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(continent, year))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.
 ```
 
 ## count() and n()
@@ -507,8 +515,12 @@ gdp_pop_bycontinents_byyear <- gapminder %>%
 ```
 
 ``` output
-`summarise()` has grouped output by 'continent'. You can override using the
-`.groups` argument.
+`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by continent and year.
+ℹ Output is grouped by continent.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(continent, year))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.
 ```
 
 ## Connect mutate with logical filtering: ifelse
@@ -534,8 +546,12 @@ gdp_pop_bycontinents_byyear_above25 <- gapminder %>%
 ```
 
 ``` output
-`summarise()` has grouped output by 'continent'. You can override using the
-`.groups` argument.
+`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by continent and year.
+ℹ Output is grouped by continent.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(continent, year))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.
 ```
 
 ``` r
@@ -549,8 +565,12 @@ gdp_future_bycontinents_byyear_high_lifeExp <- gapminder %>%
 ```
 
 ``` output
-`summarise()` has grouped output by 'continent'. You can override using the
-`.groups` argument.
+`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by continent and year.
+ℹ Output is grouped by continent.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(continent, year))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.
 ```
 
 ## Combining `dplyr` and `ggplot2`
@@ -630,7 +650,7 @@ gapminder %>%
 
 Calculate the average life expectancy in 2002 of 2 randomly selected countries
 for each continent. Then arrange the continent names in reverse order.
-**Hint:** Use the `dplyr` functions `arrange()` and `sample_n()`, they have
+**Hint:** Use the `dplyr` functions `arrange()` and `slice_sample()`, they have
 similar syntax to other dplyr functions.
 
 :::::::::::::::  solution
@@ -642,7 +662,7 @@ similar syntax to other dplyr functions.
 lifeExp_2countries_bycontinents <- gapminder %>%
    filter(year==2002) %>%
    group_by(continent) %>%
-   sample_n(2) %>%
+   slice_sample(n=2) %>%
    summarize(mean_lifeExp=mean(lifeExp)) %>%
    arrange(desc(mean_lifeExp))
 ```
